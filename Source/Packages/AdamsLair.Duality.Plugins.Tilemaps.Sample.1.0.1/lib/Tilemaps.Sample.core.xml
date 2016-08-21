@@ -1,0 +1,253 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tilemaps.Sample.core</name>
+    </assembly>
+    <members>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.Properties.SampleResNames">
+            <summary>
+            This static class contains constant string representations of certain resource names.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.AnimDirMapping">
+            <summary>
+            Maps a names animation direction to a sprite sheet index that represents
+            the first frame of the animation in that direction.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.AnimDirMapping.Direction">
+            <summary>
+            The name of the direction that is mapped.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.AnimDirMapping.Angle">
+            <summary>
+            The reference angle of the direction, in degrees.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.AnimDirMapping.SpriteSheetIndex">
+            <summary>
+            The sprite sheet index that will be used as the first frame.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimation">
+            <summary>
+            Describes an animation that can be used by an <see cref="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator"/> to animate an <see cref="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimation.Name">
+            <summary>
+            [GET / SET] The name of this animation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimation.DirectionMap">
+            <summary>
+            [GET / SET] For each animation direction, this array provides
+            the sprite sheet index at which the animation starts.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimation.FrameCount">
+            <summary>
+            [GET / SET] The number of frames in this animation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimation.Duration">
+            <summary>
+            [GET / SET] The duration of this animation, in seconds.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimation.PreferredLoopMode">
+            <summary>
+            [GET / SET] The loop mode that is preferred by this animation.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator">
+            <summary>
+            Animates an <see cref="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer"/> on the same <see cref="T:Duality.GameObject"/>.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.GetAnimation(System.String)">
+            <summary>
+            Retrieves one of the available animations that matches the specified name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.PlayAnimation(System.String,System.Boolean,Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode)">
+            <summary>
+            Plays one of the available animations that matches the specified name.
+            </summary>
+            <param name="name"></param>
+            <param name="resetAnim"></param>
+            <param name="loopMode"></param>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.Animations">
+            <summary>
+            [GET / SET] A list of animations that is available for the animated actor.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.ActiveAnimation">
+            <summary>
+            [GET / SET] The currently active animation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.ActiveLoopMode">
+            <summary>
+            [GET / SET] The currently active animation loop mode.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.AnimationTime">
+            <summary>
+            [GET / SET] The current time of the active animation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.AnimationDirection">
+            <summary>
+            [GET / SET] The direction (in radians) that is used for selecting animation frames.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.AnimationSpeed">
+            <summary>
+            [GET / SET] A speed multiplier that determines how fast the animation is played,
+            relative to its regular animation speed.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode">
+            <summary>
+            Describes the sprite animations loop behaviour.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode.Default">
+            <summary>
+            Represents the intention to let the animation decide the loop mode.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode.Once">
+            <summary>
+            The animation is played once an then remains in its last frame.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode.Loop">
+            <summary>
+            The animation is looped: When reaching the last frame, it begins again at the first one.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode.PingPong">
+            <summary>
+            The animation plays forward until reaching the end, then reverses and plays backward until 
+            reaching the start again. This "pingpong" behaviour is looped.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorAnimator.LoopMode.RandomSingle">
+            <summary>
+            A single frame is selected randomly each time the object is initialized and remains static
+            for its whole lifetime.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.CameraController">
+            <summary>
+            Moves the camera to follow an object, but keeps it within the constraints
+            of the current tilemaps.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.CameraController.Smoothness">
+            <summary>
+            [GET / SET] How smooth the camera should follow its target.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.CameraController.TargetObject">
+            <summary>
+            [GET / SET] The target object the camera should follow.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.MoveableObjectPhysics">
+            <summary>
+            Applies friction physics to an otherwise passive, moveable object.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.MoveableObjectPhysics.BaseObject">
+            <summary>
+            [GET / SET] The object on which this object is standing on, i.e. relative
+            to which friction will be simulated.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.Player">
+            <summary>
+            Represents a player and applies user input to the controlled <see cref="T:Duality.Plugins.Tilemaps.Sample.RpgLike.CharacterController"/>.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.CharacterController">
+            <summary>
+            Applies "retro RPG"-like character movement based on a physical model.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer">
+            <summary>
+            Renders a "retro RPG"-like actor sprite with an automatically determined depth offset that fits to
+            the one generated by a <see cref="T:Duality.Plugins.Tilemaps.TilemapRenderer"/>.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.GetDepthOffsetAt(Duality.Vector2)">
+            <summary>
+            Determines the depth offset that is generated at the specified world position.
+            This also inclues the renderers overall offset as specified in <see cref="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.DepthOffset"/>.
+            </summary>
+            <param name="worldPos"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.Rect">
+            <summary>
+            [GET / SET] The rectangular area the sprite occupies. Relative to the <see cref="T:Duality.GameObject"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.SharedMaterial">
+            <summary>
+            [GET / SET] The <see cref="T:Duality.Resources.Material"/> that is used for rendering the sprite.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.CustomMaterial">
+            <summary>
+            [GET / SET] A custom, local <see cref="T:Duality.Drawing.BatchInfo"/> overriding the <see cref="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.SharedMaterial"/>,
+            allowing this sprite to look unique without having to create its own <see cref="T:Duality.Resources.Material"/> Resource.
+            However, this feature should be used with caution: Performance is better using <see cref="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.SharedMaterial">shared Materials</see>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.ColorTint">
+            <summary>
+            [GET / SET] A color by which the sprite is tinted.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.DepthOffset">
+            <summary>
+            [GET / SET] The depth offset for the <see cref="T:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer"/> that is added
+            to each output vertex without contributing to perspective effects such as parallax.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.DepthScale">
+            <summary>
+            [GET / SET] The depth offset scale that is used to determine how much depth each 
+            unit of Y movement adds.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.IsVertical">
+            <summary>
+            [GET / SET] Whether the rendered sprite is considered vertical or flat with regard
+            to its depth offset generation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.Height">
+            <summary>
+            [GET / SET] The actor's current height above the ground. This is usually
+            zero / the same as the ground level, except when jumping, floating or being 
+            partially submerged.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Sample.RpgLike.ActorRenderer.SpriteIndex">
+            <summary>
+            [GET / SET] The sprite index that should be used for rendering this actor.
+            When set to -1, the entire <see cref="T:Duality.Resources.Texture"/> will be used without any
+            sprite sheet functionality.
+            </summary>
+        </member>
+    </members>
+</doc>

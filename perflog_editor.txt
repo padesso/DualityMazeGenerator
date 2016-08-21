@@ -1,0 +1,39 @@
+
+--------------------[ TimeCounter ]---------------
+
+Name                          Avg. Value    Min. Value    Max. Value         Samples 
+Duality\Frame:                   1002.97          0.00  132310600.00          150230 
+  Update:                           0.10          0.00         39.20          150230 
+    Physics:                        0.00          0.00          0.00               1 
+      Contacts:                     0.00          0.00          0.00               1 
+      Controller:                   0.00          0.00          0.00               1 
+      Continous:                    0.00          0.00          0.00               1 
+      AddRemove:                    0.00          0.00          0.00               1 
+      Solve:                        0.00          0.00          0.00               1 
+    Scene:                          0.01          0.00         11.63          150230 
+      All Components:               0.01          0.00          5.21          150230 
+    Audio:                          0.01          0.00          3.68          150230 
+  Render:                           2.26          0.37        318.61            1014 
+    SwapBuffers:                    1.05          0.00         63.00            1001 
+    QueryVisibleRenderers:          0.01          0.00          6.15            1000 
+    CollectDrawcalls:               0.49          0.11        180.15            1000 
+    OptimizeDrawcalls:              0.02          0.00          2.13            1000 
+    ProcessDrawcalls:               0.48          0.18         62.76            1000 
+    PostProcessing:                 0.00          0.00          0.00               1 
+  Log:                              2.99          0.04         18.79               7 
+Duality\VisualPicking:              0.00          0.00          0.00               1 
+Cameras\CamView Camera 0:           1.25          0.38        318.64            1000 
+
+--------------------[ StatCounter ]---------------
+
+Name                                         Avg. Value    Min. Value    Max. Value         Samples 
+Duality\Stats\Audio\NumPlaying2D:                     0             0             0          150230 
+Duality\Stats\Audio\NumPlaying3D:                     0             0             0          150230 
+Duality\Stats\Render\NumDrawcalls:                    7             6             8            1000 
+Duality\Stats\Render\NumRawBatches:                   6             4             7            1000 
+Duality\Stats\Render\NumMergedBatches:                5             4             6            1000 
+Duality\Stats\Render\NumOptimizedBatches:             5             4             6            1000 
+Duality\Stats\Memory\TotalUsage:                  10832          8463         23713          150230 
+Duality\Stats\Memory\GarbageCollect0:               367             -             -               - 
+Duality\Stats\Memory\GarbageCollect1:                41             -             -               - 
+Duality\Stats\Memory\GarbageCollect2:                10             -             -               - 

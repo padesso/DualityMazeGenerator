@@ -1,0 +1,905 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tilemaps.core</name>
+    </assembly>
+    <members>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapsCorePlugin">
+            <summary>
+            Defines the tilemaps core plugin.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Properties.TilemapsResNames">
+            <summary>
+            This static class contains constant string representations of certain resource names.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapChangedEventArgs">
+            <summary>
+            Provides event arguments for <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> changes that affect a certain region,
+            such as editing operations or runtime modifications of a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapChangedEventArgs.Pos">
+            <summary>
+            [GET] The top left position of the affected <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> region.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapChangedEventArgs.Size">
+            <summary>
+            [GET] The size of the affected <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> region, starting from <see cref="P:Duality.Plugins.Tilemaps.TilemapChangedEventArgs.Pos"/>.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapCollisionSource">
+            <summary>
+            Specifies a source of <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> collision information.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCollisionSource.SourceTilemap">
+            <summary>
+            The <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that will serve as a provider for collision information.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCollisionSource.Layers">
+            <summary>
+            A <see cref="T:Duality.Plugins.Tilemaps.TileCollisionLayer"/> bitmask that will specify which collision layers to use
+            from the <see cref="F:Duality.Plugins.Tilemaps.TilemapCollisionSource.SourceTilemap"/>.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileCollisionShapes">
+            <summary>
+            Aggregates a single tile's multi-layer collision info.
+            </summary>
+            <seealso cref="T:Duality.Plugins.Tilemaps.TileCollisionLayer"/>
+            <seealso cref="T:Duality.Plugins.Tilemaps.TileCollisionShape"/>
+            <seealso cref="T:Duality.Plugins.Tilemaps.TileInput"/>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShapes.Layer0">
+            <summary>
+            The tiles collision shape on the default layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShapes.Layer1">
+            <summary>
+            The tiles collision shape on first auxilliary layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShapes.Layer2">
+            <summary>
+            The tiles collision shape on second auxilliary layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShapes.Layer3">
+            <summary>
+            The tiles collision shape on third auxilliary layer.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TileCollisionShapes.Item(System.Int32)">
+            <summary>
+            [GET / SET] The collision shape on a given layer index from zero to (<see cref="F:Duality.Plugins.Tilemaps.TileCollisionShapes.LayerCount"/> - 1).
+            </summary>
+            <param name="layerIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TileCollisionShapes.Item(Duality.Plugins.Tilemaps.TileCollisionLayer)">
+            <summary>
+            [GET] The collision shape on the specified (set of) layer(s).
+            </summary>
+            <param name="layerMask"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileCollisionShape">
+            <summary>
+            Defines the collision shape of a single tile by specifying
+            whether each of its corners is blocked, in addition to a central
+            "filled" flag.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.Free">
+            <summary>
+            The tile is completely empty. No collision at all.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.Top">
+            <summary>
+            The tiles top edge is considered solid.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.Bottom">
+            <summary>
+            The tiles bottom edge is considered solid.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.Left">
+            <summary>
+            The tiles left edge is considered solid.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.Right">
+            <summary>
+            The tiles right edge is considered solid.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.DiagonalUp">
+            <summary>
+            A solid diagonal edge from the tiles bottom left to its
+            top right corner is assumed.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.DiagonalDown">
+            <summary>
+            A solid diagonal edge from the tiles top left to its
+            bottom right corner is assumed.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionShape.Solid">
+            <summary>
+            All collision bits are set. This is generally true for tiles that are
+            completely impassable / solid.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileInfo">
+            <summary>
+            Describes a single tile in a compiled <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            The <see cref="T:Duality.Plugins.Tilemaps.TileInfo"/> data block is generated during <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> compilation
+            based on <see cref="T:Duality.Plugins.Tilemaps.TileInput"/> data and <see cref="P:Duality.Plugins.Tilemaps.Tileset.RenderConfig"/> settings.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInfo.TexCoord0">
+            <summary>
+            The tile's <see cref="T:Duality.Resources.Texture"/> coordinates in the first <see cref="T:Duality.Resources.Texture"/> of the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            They are stored here as a measure of performance optimization for quick access - for UV information on
+            other <see cref="T:Duality.Resources.Texture"/> instances of the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>, use <see cref="M:Duality.Plugins.Tilemaps.Tileset.LookupTileAtlas(System.Int32,System.Int32,Duality.Rect@)"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInfo.DepthOffset">
+            <summary>
+            The tile's depth offset, measured in tiles.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInfo.IsVertical">
+            <summary>
+            Specifies whether the tile is standing upright / vertical, as opposed to being flat on its <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> surface.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInfo.IsVisuallyEmpty">
+            <summary>
+            Specifies whether the tile can be considered visually empty, e.g. by being completely transparent.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInfo.Collision">
+            <summary>
+            Specifies the per-layer collision shape of this tile.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Tile">
+            <summary>
+            A single <see cref="T:Duality.Plugins.Tilemaps.Tile"/> in a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Tile.Index">
+            <summary>
+            The index in the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> to which this <see cref="T:Duality.Plugins.Tilemaps.Tile"/> refers.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.Tile.DepthOffset">
+            <summary>
+            The depth offset of the <see cref="T:Duality.Plugins.Tilemaps.Tile"/>, measured in tiles.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileEdgeMap">
+            <summary>
+            A custom data structure for efficiently storing and querying vertex / corner node connectivity in a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            Each coordinate in a <see cref="T:Duality.Plugins.Tilemaps.TileEdgeMap"/> refers to a single vertex / corner node and stores a bitmask of all connections
+            to its 8-tile neighbourhood. All connections are considered bidirectional.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TileEdgeMap.AddEdge(Duality.Point2,Duality.Point2)">
+            <summary>
+            Adds a new edge connection to the <see cref="T:Duality.Plugins.Tilemaps.TileEdgeMap"/>.
+            Both specified nodes need to be adjacent to each other.
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TileEdgeMap.RemoveEdge(Duality.Point2,Duality.Point2)">
+            <summary>
+            Removes an existing edge connection from the <see cref="T:Duality.Plugins.Tilemaps.TileEdgeMap"/>.
+            Both specified nodes need to be adjacent to each other.
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TileEdgeMap.HasEdge(Duality.Point2,Duality.Point2)">
+            <summary>
+            Determines whether the specified edge is part of the <see cref="T:Duality.Plugins.Tilemaps.TileEdgeMap"/>.
+            Both specified nodes need to be adjacent to each other.
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TileEdgeMap.GetClockwiseNextFrom(Duality.Point2)">
+            <summary>
+            Starting from the specified node, this method returns the first neighbour
+            that is connected to it, starting at the one directly above it and proceeding clockwise.
+            Returns (-1, -1) if no neighbour is connected.
+            </summary>
+            <param name="from"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TileEdgeMap.FindNonEmpty">
+            <summary>
+            Finds the first node that is connected to any other node.
+            Returns (-1, -1) if no node is connected to any other.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TileEdgeMap.Clear">
+            <summary>
+            Clears all edges / connections between nodes.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TileEdgeMap.Width">
+            <summary>
+            [GET] The amount of vertices / corner nodes on the horizontal axis.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TileEdgeMap.Height">
+            <summary>
+            [GET] The amount of vertices / corner nodes on the vertical axis
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapData">
+            <summary>
+            Represents a block of <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> data.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapData.Serialize_Version_Unknown">
+            <summary>
+            Represents an unknown <see cref="T:Duality.Plugins.Tilemaps.TilemapData"/> version.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapData.Serialize_Version_ZippedBytes">
+            <summary>
+            Represents the zip-compressed byte array <see cref="T:Duality.Plugins.Tilemaps.TilemapData"/> version.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapData.Serialize_Version_DepthOffset">
+            <summary>
+            Represents the first <see cref="T:Duality.Plugins.Tilemaps.TilemapData"/> version that includes depth offsets.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapData.Tiles">
+            <summary>
+            [GET] The tile data that is stored within this instance.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapData.Size">
+            <summary>
+            [GET] The number of tiles on each axis.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapCollider">
+            <summary>
+            Uses the information from the local <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> to configure the local <see cref="T:Duality.Components.Physics.RigidBody"/> for 
+            simulating physical interaction with the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapCollider.Origin">
+            <summary>
+            [GET / SET] The origin of the generated <see cref="T:Duality.Components.Physics.RigidBody"/> shapes, relative to the position of its <see cref="T:Duality.GameObject"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapCollider.CollisionSource">
+            <summary>
+            [GET / SET] Specifies which <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> components and collision layers to use
+            to generate the collision shape.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapCollider.SolidOuterEdges">
+            <summary>
+            [GET / SET] Whether the <see cref="T:Duality.Plugins.Tilemaps.TilemapCollider"/> will generate solid edges at the tilemaps outer borders.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapCollider.RoundedCorners">
+            <summary>
+            [GET / SET] Whether the <see cref="T:Duality.Plugins.Tilemaps.TilemapCollider"/> will attempt to generate rounded corners instead of sharp ones.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapCollider.LocalTilemapRect">
+            <summary>
+            [GET] The rectangular region that is occupied by the generated <see cref="T:Duality.Components.Physics.RigidBody"/> shapes, in local / object space.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapCulling">
+            <summary>
+            A helper class that provides algorithms for determining the visible tile area for a given <see cref="T:Duality.Drawing.IDrawDevice"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.EmptyOutput">
+            <summary>
+            An empty culling result that indicates no rendering is necessary at all.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TilemapCulling.GetVisibleTileRect(Duality.Drawing.IDrawDevice,Duality.Plugins.Tilemaps.TilemapCulling.TileInput)">
+            <summary>
+            Determines the rectangular tile area that is visible to the specified <see cref="T:Duality.Drawing.IDrawDevice"/>.
+            </summary>
+            <param name="device"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapCulling.TileInput">
+            <summary>
+            Input parameters for a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> culling operation, detailing world transform and
+            tile extent.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileInput.TilemapPos">
+            <summary>
+            World space position of the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileInput.TilemapScale">
+            <summary>
+            World space scale of the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileInput.TilemapAngle">
+            <summary>
+            World space rotation of the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileInput.TileSize">
+            <summary>
+            The size of a single tile in the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileInput.TileCount">
+            <summary>
+            The total number of tiles in the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput">
+            <summary>
+            The end result of a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> culling operation, specifying the rectangular area
+            of the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that is to be rendered, as well as view space transform data
+            which can be used for doing so.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.VisibleTileStart">
+            <summary>
+            The top left origin of the visible <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> rect, in tile coordinates.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.VisibleTileCount">
+            <summary>
+            The number of visible tiles to render, starting from <see cref="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.VisibleTileStart"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.RenderOriginView">
+            <summary>
+            The view space rendering origin of the visible tile rect.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.XAxisView">
+            <summary>
+            The view space x axis of the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, taking rotation and scale into account.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.YAxisView">
+            <summary>
+            The view space y axis of the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, taking rotation and scale into account.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.RenderOriginWorld">
+            <summary>
+            The world space rendering origin of the visible tile rect.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.XAxisWorld">
+            <summary>
+            The world space x axis of the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, taking rotation and scale into account.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilemapCulling.TileOutput.YAxisWorld">
+            <summary>
+            The world space y axis of the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, taking rotation and scale into account.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.ICmpTilemapRenderer">
+            <summary>
+            Describes an interface for a <see cref="T:Duality.Component"/> that renders a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            This interface is typically used by the editor to query data for providing <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>
+            editing capabilities.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.ICmpTilemapRenderer.GetTileAtLocalPos(Duality.Vector2,Duality.Plugins.Tilemaps.TilePickMode)">
+            <summary>
+            Given the specified coordinate in local / object space, this method returns the
+            tile index that is located there.
+            </summary>
+            <param name="localPos"></param>
+            <param name="pickMode">Specifies the desired behavior when attempting to get a tile outside the rendered area.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.ICmpTilemapRenderer.GetTileDepthOffsetAt(Duality.Point2)">
+            <summary>
+            Determines the generated depth offset for the tile at the specified tile coordinates.
+            This also inclues the renderers overall depth offset.
+            </summary>
+            <param name="tilePos"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.ICmpTilemapRenderer.ActiveTilemap">
+            <summary>
+            [GET] A reference to the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that is currently rendered by this <see cref="T:Duality.Plugins.Tilemaps.ICmpTilemapRenderer"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.ICmpTilemapRenderer.LocalTilemapRect">
+            <summary>
+            [GET] The rectangular region that is occupied by the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, in local / object space.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.ICmpTilemapRenderer.ColorTint">
+            <summary>
+            [GET / SET] A color by which the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> is tinted.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.ICmpTilemapRenderer.BaseDepthOffset">
+            <summary>
+            [GET] The base depth offset that will be used when rendering the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            This property represents the sum of all non-local depth adjustments in the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>,
+            expressed as an offset to the depth that is implicitly defined by the <see cref="T:Duality.Components.Transform"/> Z position.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileDepthOffsetMode">
+            <summary>
+            Specifies the way in which depth offsets are generated per-tile.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileDepthOffsetMode.Flat">
+            <summary>
+            All tiles share the same depth offset.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileDepthOffsetMode.Local">
+            <summary>
+            A tile's depth offset is derived from its local position in the tilemap.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileDepthOffsetMode.World">
+            <summary>
+            A tile's depth offset is derived from its world-space position.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilePickMode">
+            <summary>
+            Specifies the desired behavior when picking a tile outside the rendered area.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilePickMode.Free">
+            <summary>
+            Negative and out-of-bounds coordinates are returned.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilePickMode.Clamp">
+            <summary>
+            The returned tile coordinates are clamped to the available rendered area.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TilePickMode.Reject">
+            <summary>
+            Coordinates outside the rendered area are rejected.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilemapRenderer">
+            <summary>
+            Renders a <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that either belongs to the same <see cref="T:Duality.GameObject"/>
+            or is referenced by <see cref="P:Duality.Plugins.Tilemaps.TilemapRenderer.ExternalTilemap"/>.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TilemapRenderer.GetTileAtLocalPos(Duality.Vector2,Duality.Plugins.Tilemaps.TilePickMode)">
+            <summary>
+            Given the specified coordinate in local / object space, this method returns the
+            tile index that is located there.
+            </summary>
+            <param name="localPos"></param>
+            <param name="pickMode">Specifies the desired behavior when attempting to get a tile outside the rendered area.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.TilemapRenderer.GetTileDepthOffsetAt(Duality.Point2)">
+            <summary>
+            Determines the generated depth offset for the tile at the specified tile coordinates.
+            This also inclues the renderers overall offset as specified in <see cref="P:Duality.Plugins.Tilemaps.TilemapRenderer.DepthOffset"/>,
+            but ignores all actual per-tile and tileset depth offsets. The specified tile position
+            is considered virtual and does not have to be within the valid tile position range.
+            </summary>
+            <param name="tilePos"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.BaseDepthOffset">
+            <summary>
+            [GET] The base depth offset that will be used when rendering the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            This property represents the sum of all non-local depth adjustments in the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>,
+            expressed as an offset to the depth that is implicitly defined by the <see cref="T:Duality.Components.Transform"/> Z position.
+            
+            This offset is automatically calculated based on <see cref="P:Duality.Plugins.Tilemaps.TilemapRenderer.DepthOffset"/> and <see cref="P:Duality.Plugins.Tilemaps.TilemapRenderer.TileDepthOffset"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.DepthOffset">
+            <summary>
+            [GET / SET] The depth offset for the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that is added
+            to each output vertex without contributing to perspective effects such as parallax.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.TileDepthOffset">
+            <summary>
+            [GET / SET] An offset measured in tiles that is assumed in the depth offset generation.
+            With an offset of one, each tile will be rendered with the base offset of "one tile higher up".
+            
+            This can be used as a quick way to layer different tilemaps on each other where each layer
+            represents a certain world space height. The same effect can be achieved by carefully adjusting 
+            the <see cref="P:Duality.Plugins.Tilemaps.TilemapRenderer.DepthOffset"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.TileDepthScale">
+            <summary>
+            [GET / SET] The depth offset scale that is used to determine how much depth each 
+            tile / pixel / unit adds when using non-flat depth offset generation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.TileDepthMode">
+            <summary>
+            [GET / SET] Specifies the way in which depth offsets are generated per-tile.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.ColorTint">
+            <summary>
+            [GET / SET] A color by which the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> is tinted.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.Origin">
+            <summary>
+            [GET / SET] The origin of the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> as a whole, relative to the position of its <see cref="T:Duality.GameObject"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.ExternalTilemap">
+            <summary>
+            [GET / SET] The <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that should be rendered. 
+            If this is null, the local <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> on the same <see cref="T:Duality.GameObject"/> is used.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.ActiveTilemap">
+            <summary>
+            [GET] A reference to the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> that is currently rendered by this <see cref="T:Duality.Plugins.Tilemaps.TilemapRenderer"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilemapRenderer.LocalTilemapRect">
+            <summary>
+            [GET] The rectangular region that is occupied by the rendered <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, in local / object space.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Tilemap">
+            <summary>
+            A <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> Component holds the actual map information that is used by other Components to display and interact with.
+            Without the appropriate renderer, it remains invisible and without the appropriate collider, it won't interact physically.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tilemap.SetTile(System.Int32,System.Int32,Duality.Plugins.Tilemaps.Tile)">
+            <summary>
+            Sets a single tile at the specified position.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="tile"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tilemap.Resize(System.Int32,System.Int32,Duality.Alignment)">
+            <summary>
+            Resizes the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+            <param name="width"></param>
+            <param name="height"></param>
+            <param name="origin"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tilemap.Clear">
+            <summary>
+            Clears the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> without modifying its size.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tilemap.BeginUpdateTiles">
+            <summary>
+            Begins an external update operation to the tile data stored in the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>. Calling this
+            method will grant direct write access to the internal tile data. No data will be copied.
+            
+            Note that you are not required to call this method when using other <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> API to update
+            tile data. Instead, use this method only when direct write access to the internal tile data should be
+            acquired.
+            </summary>
+            <returns>The internal tile data of the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, which can now be modified externally</returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tilemap.EndUpdateTiles(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Ends an external update operation to the tile data stored in the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>. Calling this
+            method will notify other <see cref="T:Duality.Component"/> classes about changes, so they can update
+            themselves. By specifying exactly which rectangular region was affected by the operation,
+            these updates can be performed a lot faster.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tilemap.EndUpdateTiles">
+            <summary>
+            Ends an external update operation to the tile data stored in the <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>. Calling this
+            method will notify other <see cref="T:Duality.Component"/> classes about changes, so they can update
+            themselves. However, since no specific region is specified that is affected by the operation,
+            a potentially expensive full update needs to be performed.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tilemap.Tileset">
+            <summary>
+            [GET / SET] The <see cref="P:Duality.Plugins.Tilemaps.Tilemap.Tileset"/> that defined the properties of each type of <see cref="T:Duality.Plugins.Tilemaps.Tile"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tilemap.Tiles">
+            <summary>
+            [GET] An interface providing read access to the tile data in this <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tilemap.Size">
+            <summary>
+            [GET] The number of tiles on each axis.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileCollisionLayer">
+            <summary>
+            A bitmask that specifies which collision layers are addressed in a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionLayer.None">
+            <summary>
+            No collision layers at all.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionLayer.Layer0">
+            <summary>
+            The default collision layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionLayer.Layer1">
+            <summary>
+            The first auxilliary collision layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionLayer.Layer2">
+            <summary>
+            The second auxilliary collision layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionLayer.Layer3">
+            <summary>
+            The third auxilliary collision layer.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileCollisionLayer.All">
+            <summary>
+            All collision layers.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TileInput">
+            <summary>
+            Describes a single tile input in a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            When compiling a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>, these inputs are transformed into
+            a <see cref="T:Duality.Plugins.Tilemaps.TileInfo"/> data block which can then be used by <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>
+            Components and others.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInput.DepthOffset">
+            <summary>
+            The tile's depth offset, measured in tiles.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInput.IsVertical">
+            <summary>
+            Whether the tile is standing upright / vertical, as opposed to being flat on its <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/> surface.
+            </summary>
+        </member>
+        <member name="F:Duality.Plugins.Tilemaps.TileInput.Collision">
+            <summary>
+            Specifies the per-layer collision shape of this tile.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.TilesetRenderInput">
+            <summary>
+            Describes a single rendering input in a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> definition. Each tile's visual representation is 
+            composed of all rendering inputs that are defined in a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> - essentially, they are mapped to 
+            the different texture inputs used when rendering each tile.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.Name">
+            <summary>
+            [GET / SET] The human-friendly name of this rendering input.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.Id">
+            <summary>
+            [GET / SET] The id of this rendering input, which can later be used for mapping it to <see cref="T:Duality.Resources.Material"/> texture slots, etc.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.SourceData">
+            <summary>
+            [GET / SET] The source pixel data from which this rendering input will be created. This may end up to be equal to the actually used
+            pixel data, but it doesn't necessarily have to be, as the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> is allowed to make internal modifications and optimizations
+            while preparing the data for rendering.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.SourceTileSize">
+            <summary>
+            [GET / SET] The width and height (in pixels) of each tile in the specified source data. This is usually equal in all
+            rendering inputs of a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>. Whether or not this tile size is used in the generated target data is up to the
+            <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> implementation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.SourceTileSpacing">
+            <summary>
+            [GET / SET] The spacing (in pixels) around each tile in the source data. A spacing of one means that there is a 1-pixel-wide space on
+            each side of every tile, meaning that the actual space between two tiles will be two pixels.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.TargetTileSpacing">
+            <summary>
+            [GET / SET] The spacing (in pixels) around each tile in the target data. A spacing of one means that there is a 1-pixel-wide space on
+            each side of every tile, meaning that the actual space between two tiles will be two pixels. The spacing is also applied on edges of the
+            provided pixel data, meaning that the spacing will also generate an offset for top-left and bottom-right tiles. 
+            Whether or not this tile spacing is used in the generated target data is up to the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> implementation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.TargetMagFilter">
+            <summary>
+            [GET / SET] The target data's magnification (zooming in) filtering algorithm.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.TargetMinFilter">
+            <summary>
+            [GET / SET] The target data's minification (zooming out) filtering algorithm.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.TilesetRenderInput.TargetFormat">
+            <summary>
+            [GET / SET] The internal texture format of the generated target data.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.Tilemaps.Tileset">
+            <summary>
+            <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> Resources define the tiles that are used by <see cref="T:Duality.Plugins.Tilemaps.Tilemap"/>, <see cref="T:Duality.Plugins.Tilemaps.TilemapRenderer"/> and <see cref="T:Duality.Plugins.Tilemaps.TilemapCollider"/> Components
+            to update and display tilemaps, as well as define interactions between them and the world.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.LookupTileAtlas(System.Int32,System.Int32,Duality.Rect@)">
+            <summary>
+            Looks up the vertex UV rect for the specified rendering input / data and tile.
+            </summary>
+            <param name="renderDataIndex"></param>
+            <param name="tileIndex"></param>
+            <param name="uv"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.LookupTileSourceRect(System.Int32,System.Int32,Duality.Point2@,Duality.Point2@)">
+            <summary>
+            Looks up the source pixel coordinates for the specified input layer and tile.
+            </summary>
+            <param name="renderConfigIndex"></param>
+            <param name="tileIndex"></param>
+            <param name="pos"></param>
+            <param name="size"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.Compile">
+            <summary>
+            Compiles the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> using the specified source data, in order to
+            generate optimized target data for rendering and collision detection.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.GenerateRenderMaterial">
+            <summary>
+            Generates the <see cref="P:Duality.Plugins.Tilemaps.Tileset.RenderMaterial"/> from the currently available
+            <see cref="P:Duality.Plugins.Tilemaps.Tileset.BaseMaterial"/> and <see cref="F:Duality.Plugins.Tilemaps.Tileset.renderData"/>.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.DiscardCompiledData">
+            <summary>
+            Discards all <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> data that was acquired during <see cref="M:Duality.Plugins.Tilemaps.Tileset.Compile"/>.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.DiscardRenderMaterial">
+            <summary>
+            Discards a previously generated <see cref="P:Duality.Plugins.Tilemaps.Tileset.RenderMaterial"/>. Does not discard any
+            other generated <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> data.
+            </summary>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.GetCompileHashCode">
+            <summary>
+            Determines the <see cref="M:Duality.Plugins.Tilemaps.Tileset.Compile"/>-relevant hash code of the specified <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            This value is used internally to determine whether a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> needs to be recompiled.
+            </summary>
+            <param name="tileset"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.FillTileSpacing(Duality.Drawing.PixelData,System.Int32,Duality.Point2,Duality.Point2)">
+            <summary>
+            Fills up the specified spacing around a tile's pixel data with colors that are
+            similar to the existing edge colors in order to prevent filtering artifacts
+            when rendering them as a texture atlas.
+            </summary>
+            <param name="targetData"></param>
+            <param name="targetTileSpacing"></param>
+            <param name="targetContentPos"></param>
+            <param name="targetTileSize"></param>
+        </member>
+        <member name="M:Duality.Plugins.Tilemaps.Tileset.IsCompletelyTransparent(Duality.Drawing.PixelData,Duality.Point2,Duality.Point2)">
+            <summary>
+            Determines whether the specified pixel data block is completely transparent in
+            the specified area.
+            </summary>
+            <param name="data"></param>
+            <param name="pos"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.BaseMaterial">
+            <summary>
+            [GET] A configuration template that is used for generating the output <see cref="P:Duality.Plugins.Tilemaps.Tileset.RenderMaterial"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.RenderConfig">
+            <summary>
+            [GET] The different layers of <see cref="T:Duality.Plugins.Tilemaps.TilesetRenderInput"/>, which compose the look of all the tiles
+            that are defined in this <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.TileSize">
+            <summary>
+            [GET / SET] The desired size of a tile in world space. How exactly this value is accounted for depends
+            on the Components that evaluate it for rendering, collision detection, etc.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.TileInput">
+            <summary>
+            [GET / SET] Provides information about each tile in the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            This information is transformed in the compilation process of a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>
+            in order to form the <see cref="P:Duality.Plugins.Tilemaps.Tileset.TileData"/> that will be used for determining
+            tile behaviour.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.TileCount">
+            <summary>
+            [GET] The number of tiles in this <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>. Calculated during compilation.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.RenderMaterial">
+            <summary>
+            [GET] The <see cref="T:Duality.Resources.Material"/> that has been compiled from the specified <see cref="P:Duality.Plugins.Tilemaps.Tileset.RenderConfig"/>.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.TileData">
+            <summary>
+            [GET] Provides information about each compiled tile in the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            This information is generated during the compilation process of a <see cref="T:Duality.Plugins.Tilemaps.Tileset"/>.
+            Do not modify unless you know exactly what you're doing.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.Compiled">
+            <summary>
+            [GET] Whether this <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> has been compiled yet or not.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.Tilemaps.Tileset.HasChangedSinceCompile">
+            <summary>
+            [GET] Determines whether the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> has changed since the last
+            time it was compiled. Always true, if the <see cref="T:Duality.Plugins.Tilemaps.Tileset"/> has never been
+            compiled before.
+            </summary>
+        </member>
+    </members>
+</doc>
